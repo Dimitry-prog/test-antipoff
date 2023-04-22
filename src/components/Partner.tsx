@@ -28,11 +28,11 @@ const Partner = () => {
       <div
         className="relative px-8 lg:px-[188px] py-16 lg:py-10 flex flex-col lg:flex-row gap-4 lg:gap-8 items-center bg-violet">
         <button type="button" aria-label="back"
-                className="lg:px-4 lg:py-2 absolute top-6 left-4 lg:top-[15%] lg:left-[5%] text-gray-light lg:border border-gray-light rounded-lg">
+                className="lg:px-4 lg:py-2 absolute top-6 left-4 lg:top-[15%] lg:left-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500">
           {isDesktop ? 'Назад' : <ArrLeftIcon/>}
         </button>
         <button type="button" aria-label="back"
-                className="lg:px-4 lg:py-2 absolute top-6 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg">
+                className="lg:px-4 lg:py-2 absolute top-6 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500">
           {isDesktop ? 'Выход' : <LogoutIcon/>}
         </button>
 
@@ -43,7 +43,7 @@ const Partner = () => {
           <p className="text-lg lg:text-xl">Партнер</p>
         </div>
       </div>
-      <div className="px-8 lg:px-[188px] flex-grow flex flex-col lg:flex-row gap-8 lg:gap-32">
+      <div className="px-4 lg:px-[188px] flex-grow flex flex-col lg:flex-row gap-8 lg:gap-32">
         <div className="flex flex-col gap-6">
           <p>Клиенты видят в нем эксперта по вопросам разработки комплексных решений финансовых продуктов, включая такие
             аспекты, как организационная структура, процессы, аналитика и ИТ-компоненты. Он помогает клиентам лучше
@@ -64,11 +64,13 @@ const Partner = () => {
           </p>
         </div>
         <div className="flex flex-col gap-6 order-first lg:order-last">
-          <a href="tel:+7 (954) 333-44-55" target='_blank' rel="noreferrer noopener" className="flex gap-3">
+          <a href="tel:+7 (954) 333-44-55" target='_blank' rel="noreferrer noopener"
+             className="flex gap-3 hover:text-violet/80 transition-all duration-500">
             <PhoneIcon/>
             +7 (954) 333-44-55
           </a>
-          <a href="mailto:sykfafkar@gmail.com" target='_blank' rel="noreferrer noopener" className="flex gap-3">
+          <a href="mailto:sykfafkar@gmail.com" target='_blank' rel="noreferrer noopener"
+             className="flex gap-3 hover:text-violet/80 transition-all duration-500">
             <EmailIcon/>
             sykfafkar@gmail.com
           </a>
