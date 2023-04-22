@@ -1,7 +1,9 @@
+import Partner from "./components/Partner.tsx";
+
 const App = () => {
   return (
     <>
-
+      <Partner/>
     </>
   );
 };
