@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 #root {
-    @apply max-w-[1440px] mx-auto
+    @apply max-w-[1440px] mx-auto font-roboto font-normal text-black text-base
 }
