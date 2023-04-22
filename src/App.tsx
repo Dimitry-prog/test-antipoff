@@ -1,9 +1,9 @@
-import TeamCard from "./components/TeamCard.tsx";
+import TeamList from "./components/TeamList.tsx";
 
 const App = () => {
   return (
     <>
-      <TeamCard/>
+      <TeamList/>
     </>
   );
 };
