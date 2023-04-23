@@ -26,3 +26,5 @@ export const teamList = [
     name: 'Артур Королёв',
   },
 ];
+
+export const BASE_URL = "https://reqres.in/api"

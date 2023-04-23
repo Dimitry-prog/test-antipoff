@@ -3,3 +3,7 @@ export type TMember = {
   imgSrc: string;
   name: string;
 }
+
+export type TAxiosKnownError = {
+  message: string;
+}
