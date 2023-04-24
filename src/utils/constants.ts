@@ -27,4 +27,5 @@ export const teamList = [
   },
 ];
 
-export const BASE_URL = "https://reqres.in/api"
+export const BASE_URL = "https://reqres.in/api";
+export const TOTAL_PAGE = 3;

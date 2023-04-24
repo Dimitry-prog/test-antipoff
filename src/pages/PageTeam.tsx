@@ -1,15 +1,15 @@
-import { useNavigate } from "react-router-dom";
 import TeamList from "../components/TeamList.tsx";
 import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { useEffect, useState } from "react";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
+import { useNavigate } from "react-router-dom";
 
 const PageTeam = () => {
   const [resize, setResize] = useState<number | null>(null);
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     localStorage.removeItem('token');
     navigate("/signin");
   }
@@ -39,7 +39,7 @@ const PageTeam = () => {
           aria-label="back"
           className="lg:px-4 lg:py-2 absolute top-4 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500"
         >
-          {isDesktop ? 'Выход' : <LogoutIcon/>}
+          {isDesktop ? 'Выход' : <LogoutIcon />}
         </button>
         <h1 className="text-2xl text-white lg:text-3xl">Наша команда</h1>
         <p className="text-base leading-[19px] text-center text-gray-light lg:text-lg">
@@ -48,7 +48,7 @@ const PageTeam = () => {
           плечи, и умеющие находить выход из любых, даже самых сложных ситуаций.
         </p>
       </div>
-      <TeamList/>
+      <TeamList />
     </section>
   );
 };

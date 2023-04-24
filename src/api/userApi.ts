@@ -10,10 +10,10 @@ export const getUser = createAsyncThunk<TUserResponse, string, { rejectValue: st
   }
 );
 
-export const getUsers = createAsyncThunk<TUsersResponse, void, { rejectValue: string }>(
+export const getUsers = createAsyncThunk<TUsersResponse, number, { rejectValue: string }>(
   'user/getUsers',
-  async (_, { rejectWithValue }) => {
-    const request = api(`/users`);
+  async (page, { rejectWithValue }) => {
+    const request = api(`/users?page=${page}&per_page=4`);
     return handleRequest(request, rejectWithValue);
   }
 );
