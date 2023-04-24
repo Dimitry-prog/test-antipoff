@@ -1,12 +1,21 @@
 import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { useEffect, useState } from "react";
-import { BREAKPOINT_DESKTOP, teamList } from "../utils/constants.ts";
-import TeamCard from "./TeamCard.tsx";
+import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import ArrDownIcon from "../assets/ArrDownIcon.tsx";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
+import { getUsers } from "../api/userApi.ts";
+import TeamCard from "./TeamCard.tsx";
 
 const TeamList = () => {
   const [resize, setResize] = useState<number | null>(null);
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
+  const userList = useAppSelector(state => state.user.userList);
+  const status = useAppSelector(state => state.user.status);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setResize(window.innerWidth);
@@ -21,6 +30,10 @@ const TeamList = () => {
       clearTimeout(timeOut);
     }
   }, []);
+
+  if (status === "loading") {
+    return <h1>LOADING...</h1>
+  }
 
   return (
     <section className="pb-8 lg:pb-16 flex flex-col gap-8 lg:gap-12">
@@ -39,9 +52,9 @@ const TeamList = () => {
         </p>
       </div>
       <ul className="px-2 lg:px-20 flex flex-wrap justify-center xl:justify-normal gap-5">
-        {teamList.map(member => (
-          <li key={member.id}>
-            <TeamCard {...member} />
+        {userList.map(user => (
+          <li key={user.id}>
+            <TeamCard user={user}/>
           </li>
         ))}
       </ul>

@@ -63,7 +63,7 @@ const LoginUser = () => {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full mt-2 py-3 text-white rounded-lg bg-violet ring-violet hover:bg-white hover:text-violet hover:ring-2 disabled:opacity-80 transition-all duration-500 disabled:poin"
+          className="w-full mt-2 py-3 text-white rounded-lg bg-violet ring-violet hover:bg-white hover:text-violet hover:ring-2 disabled:opacity-80 transition-all duration-500"
         >
           {status === 'loading' ? 'Выполняем вход...' : "Войти"}
         </button>
