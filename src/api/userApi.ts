@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, handleRequest } from "./api.ts";
 import { TUserResponse, TUsersResponse } from "../types/userTypes.ts";
 
-export const getUser = createAsyncThunk<TUserResponse, number, { rejectValue: string }>(
+export const getUser = createAsyncThunk<TUserResponse, string, { rejectValue: string }>(
   'user/getUser',
   async (id, { rejectWithValue }) => {
     const request = api(`/users/${id}`);

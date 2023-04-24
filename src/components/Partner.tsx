@@ -4,10 +4,23 @@ import { useEffect, useState } from "react";
 import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
+import { useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
+import { getUser } from "../api/userApi.ts";
 
 const Partner = () => {
   const [resize, setResize] = useState<number | null>(null);
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
+  const user = useAppSelector(state => state.user.user);
+  const { teamId } = useParams();
+  const dispatch = useAppDispatch();
+  const fullName = `${user?.first_name} ${user?.last_name}`;
+
+  useEffect(() => {
+    if (teamId) {
+      dispatch(getUser(teamId));
+    }
+  }, [teamId]);
 
   useEffect(() => {
     const handleResize = () => setResize(window.innerWidth);
@@ -36,10 +49,10 @@ const Partner = () => {
           {isDesktop ? 'Выход' : <LogoutIcon/>}
         </button>
 
-        <img src="https://reqres.in/img/faces/2-image.jpg" alt="partner"
+        <img src={user?.avatar} alt={fullName}
              className="w-[188px] h-[188px] object-cover rounded-[100px]"/>
         <div className="flex flex-col gap-4 items-center lg:items-start text-white order-first lg:order-last">
-          <h1 className="w-full text-2xl lg:text-3xl">Артур Королёв</h1>
+          <h1 className="w-full text-2xl lg:text-3xl">{fullName}</h1>
           <p className="text-lg lg:text-xl">Партнер</p>
         </div>
       </div>
@@ -72,7 +85,7 @@ const Partner = () => {
           <a href="mailto:sykfafkar@gmail.com" target='_blank' rel="noreferrer noopener"
              className="flex gap-3 hover:text-violet/80 transition-all duration-500">
             <EmailIcon/>
-            sykfafkar@gmail.com
+            {user?.email}
           </a>
         </div>
       </div>
