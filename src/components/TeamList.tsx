@@ -5,6 +5,7 @@ import ArrDownIcon from "../assets/ArrDownIcon.tsx";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUsers } from "../api/userApi.ts";
 import TeamCard from "./TeamCard.tsx";
+import { useNavigate } from "react-router-dom";
 
 const TeamList = () => {
   const [resize, setResize] = useState<number | null>(null);
@@ -12,6 +13,12 @@ const TeamList = () => {
   const userList = useAppSelector(state => state.user.userList);
   const status = useAppSelector(state => state.user.status);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = (): void => {
+    localStorage.removeItem('token');
+    navigate("/signin");
+  }
 
   useEffect(() => {
     dispatch(getUsers());
@@ -40,8 +47,12 @@ const TeamList = () => {
       <div
         className="relative px-5 py-16 flex flex-col gap-4 items-center bg-violet"
       >
-        <button type="button" aria-label="back"
-                className="lg:px-4 lg:py-2 absolute top-4 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500">
+        <button
+          onClick={handleLogout}
+          type="button"
+          aria-label="back"
+          className="lg:px-4 lg:py-2 absolute top-4 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500"
+        >
           {isDesktop ? 'Выход' : <LogoutIcon/>}
         </button>
         <h1 className="text-2xl text-white lg:text-3xl">Наша команда</h1>

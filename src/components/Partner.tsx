@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUser } from "../api/userApi.ts";
 
@@ -15,6 +15,12 @@ const Partner = () => {
   const { teamId } = useParams();
   const dispatch = useAppDispatch();
   const fullName = `${user?.first_name} ${user?.last_name}`;
+  const navigate = useNavigate();
+
+  const handleLogout = (): void => {
+    localStorage.removeItem('token');
+    navigate("/signin");
+  }
 
   useEffect(() => {
     if (teamId) {
@@ -40,12 +46,20 @@ const Partner = () => {
     <section className="flex flex-col gap-8 lg:gap-12">
       <div
         className="relative px-8 lg:px-[188px] py-16 lg:py-10 flex flex-col lg:flex-row gap-4 lg:gap-8 items-center bg-violet">
-        <button type="button" aria-label="back"
-                className="lg:px-4 lg:py-2 absolute top-6 left-4 lg:top-[15%] lg:left-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500">
+        <button
+          onClick={() => navigate(-1)}
+          type="button"
+          aria-label="back"
+          className="lg:px-4 lg:py-2 absolute top-6 left-4 lg:top-[15%] lg:left-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500"
+        >
           {isDesktop ? 'Назад' : <ArrLeftIcon/>}
         </button>
-        <button type="button" aria-label="back"
-                className="lg:px-4 lg:py-2 absolute top-6 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500">
+        <button
+          onClick={handleLogout}
+          type="button"
+          aria-label="back"
+          className="lg:px-4 lg:py-2 absolute top-6 right-4 lg:top-[15%] lg:right-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500"
+        >
           {isDesktop ? 'Выход' : <LogoutIcon/>}
         </button>
 
@@ -77,16 +91,16 @@ const Partner = () => {
           </p>
         </div>
         <div className="flex flex-col gap-6 order-first lg:order-last">
-          <a href="tel:+7 (954) 333-44-55" target='_blank' rel="noreferrer noopener"
-             className="flex gap-3 hover:text-violet/80 transition-all duration-500">
+          <Link to="tel:+7 (954) 333-44-55" target='_blank' rel="noreferrer noopener"
+                className="flex gap-3 hover:text-violet/80 transition-all duration-500">
             <PhoneIcon/>
             +7 (954) 333-44-55
-          </a>
-          <a href="mailto:sykfafkar@gmail.com" target='_blank' rel="noreferrer noopener"
-             className="flex gap-3 hover:text-violet/80 transition-all duration-500">
+          </Link>
+          <Link to={`mailto:${user?.email}`} target='_blank' rel="noreferrer noopener"
+                className="flex gap-3 hover:text-violet/80 transition-all duration-500">
             <EmailIcon/>
             {user?.email}
-          </a>
+          </Link>
         </div>
       </div>
     </section>
