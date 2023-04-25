@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUsers } from "../api/userApi.ts";
 import TeamCard from "./TeamCard.tsx";
 import { PER_PAGE, TOTAL_PAGE } from "../utils/constants.ts";
+import Loader from "./Loader.tsx";
 
 const TeamList = () => {
   const userList = useAppSelector(state => state.user.userList);
@@ -23,7 +24,7 @@ const TeamList = () => {
   }, [userList]);
 
   if (status === "loading") {
-    return <h1 className="flex items-center justify-center">LOADING...</h1>
+    return <Loader/>
   }
 
   return (
