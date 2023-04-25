@@ -1,6 +1,5 @@
 import PhoneIcon from "../assets/PhoneIcon.tsx";
 import EmailIcon from "../assets/EmailIcon.tsx";
-import { useEffect, useState } from "react";
 import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -8,9 +7,10 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import ProfileIcon from "../assets/ProfileIcon.tsx";
 import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import { authActions } from "../store/slices/authSlice.ts";
+import useResizeWindow from "../hooks/useResizeWindow.tsx";
 
 const Partner = () => {
-  const [resize, setResize] = useState<number | null>(null);
+  const resize = useResizeWindow();
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
   const { teamId } = useParams();
   const userList = useAppSelector(state => state.user.userList);
@@ -22,20 +22,6 @@ const Partner = () => {
     dispatch(authActions.logout());
     navigate("/signin", { replace: true });
   }
-
-  useEffect(() => {
-    const handleResize = () => setResize(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-
-    const timeOut = setTimeout(() => {
-      handleResize();
-    }, 3000);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timeOut);
-    }
-  }, []);
 
   return (
     <section className="pb-5 flex flex-col gap-8 lg:gap-12">

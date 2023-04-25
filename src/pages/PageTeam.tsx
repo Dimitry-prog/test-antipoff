@@ -1,13 +1,13 @@
 import TeamList from "../components/TeamList.tsx";
 import LogoutIcon from "../assets/LogoutIcon.tsx";
-import { useEffect, useState } from "react";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/reduxHooks.ts";
 import { authActions } from "../store/slices/authSlice.ts";
+import useResizeWindow from "../hooks/useResizeWindow.tsx";
 
 const PageTeam = () => {
-  const [resize, setResize] = useState<number | null>(null);
+  const resize = useResizeWindow();
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -16,20 +16,6 @@ const PageTeam = () => {
     dispatch(authActions.logout());
     navigate("/signin", { replace: true });
   }
-
-  useEffect(() => {
-    const handleResize = () => setResize(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-
-    const timeOut = setTimeout(() => {
-      handleResize();
-    }, 3000);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timeOut);
-    }
-  }, []);
 
   return (
     <section className="pb-8 lg:pb-16 flex flex-col gap-8 lg:gap-12">
