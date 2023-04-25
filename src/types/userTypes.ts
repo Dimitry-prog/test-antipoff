@@ -23,7 +23,7 @@ export type TSupport = {
   text: string
 }
 
-export interface TUsersResponse {
+export type TUsersResponse = {
   page: number
   per_page: number
   total: number
@@ -31,3 +31,11 @@ export interface TUsersResponse {
   data: TUser[]
   support: TSupport
 }
+
+export type TUserUpdateResponse = {
+  id: number
+  avatar: string
+  updatedAt: string
+}
+
+export type TUserUpdateData = Omit<TUserUpdateResponse, "updatedAt">

@@ -45,7 +45,7 @@ const TeamList = () => {
             disabled={page === 1}
             className={`${page > 1
               ? "hover:bg-violet"
-              : "disabled:opacity-20"} w-8 h-8 flex items-center justify-center border border-violet rounded-md transition-all duration-500`}
+              : "disabled:opacity-20"} w-8 h-8 flex items-center justify-center rounded-md transition-all duration-500`}
           >
             👈
           </button>
@@ -72,7 +72,7 @@ const TeamList = () => {
             disabled={page === TOTAL_PAGE}
             className={`${page < TOTAL_PAGE
               ? "hover:bg-violet"
-              : "disabled:opacity-20"} w-8 h-8 flex items-center justify-center border border-violet rounded-md transition-all duration-500`}
+              : "disabled:opacity-20"} w-8 h-8 flex items-center justify-center rounded-md transition-all duration-500`}
           >
             👉
           </button>

@@ -1,6 +1,6 @@
 import { TUserCurrent } from "../../types/userTypes.ts";
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getUser, getUsers } from "../../api/userApi.ts";
+import { getUser, getUsers, updateUser } from "../../api/userApi.ts";
 
 type TUserState = {
   user: TUserCurrent | null,
@@ -68,6 +68,24 @@ const userSlice = createSlice({
         localStorage.setItem("userList", JSON.stringify(state.userList));
       })
       .addCase(getUsers.rejected, (state, action) => {
+        state.status = "error";
+        state.error = action.payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.status = "loading";
+        state.error = undefined;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.status = "success";
+
+        const user = state.userList.find(user => user.id === action.payload.id);
+
+        if (!user) return;
+        
+        user.avatar = action.payload.avatar;
+        localStorage.setItem("userList", JSON.stringify(state.userList));
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.status = "error";
         state.error = action.payload;
       })

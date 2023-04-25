@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, handleRequest } from "./api.ts";
-import { TUserResponse, TUsersResponse } from "../types/userTypes.ts";
+import { TUserResponse, TUsersResponse, TUserUpdateData, TUserUpdateResponse } from "../types/userTypes.ts";
 import { TOTAL_USERS } from "../utils/constants.ts";
 
 export const getUser = createAsyncThunk<TUserResponse, string, { rejectValue: string }>(
@@ -18,3 +18,11 @@ export const getUsers = createAsyncThunk<TUsersResponse, void, { rejectValue: st
     return handleRequest(request, rejectWithValue);
   }
 );
+
+export const updateUser = createAsyncThunk<TUserUpdateResponse, TUserUpdateData, { rejectValue: string }>(
+  'user/updateUser',
+  async (data, { rejectWithValue }) => {
+    const request = api.patch(`/users/${data.id}`, data);
+    return handleRequest(request, rejectWithValue);
+  }
+)

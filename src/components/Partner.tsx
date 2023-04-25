@@ -1,12 +1,13 @@
 import PhoneIcon from "../assets/PhoneIcon.tsx";
 import EmailIcon from "../assets/EmailIcon.tsx";
 import { useEffect, useState } from "react";
-import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUser } from "../api/userApi.ts";
+import ProfileIcon from "../assets/ProfileIcon.tsx";
+import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 
 const Partner = () => {
   const [resize, setResize] = useState<number | null>(null);
@@ -53,6 +54,14 @@ const Partner = () => {
         >
           {isDesktop ? 'Назад' : <ArrLeftIcon/>}
         </button>
+        <Link
+          to={`/team/${teamId}/edit-profile`}
+          type="button"
+          aria-label="back"
+          className="lg:px-4 lg:py-2 absolute top-7 right-16 lg:top-[15%] lg:right-[15%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500"
+        >
+          {isDesktop ? 'Профиль' : <ProfileIcon/>}
+        </Link>
         <button
           onClick={handleLogout}
           type="button"

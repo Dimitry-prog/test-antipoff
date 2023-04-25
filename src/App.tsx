@@ -4,6 +4,7 @@ import LoginUser from "./components/LoginUser.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import Partner from "./components/Partner.tsx";
 import PageTeam from "./pages/PageTeam.tsx";
+import EditProfile from "./components/EditProfile.tsx";
 
 const App = () => {
 
@@ -15,6 +16,7 @@ const App = () => {
         <Route element={<RequireAuth/>}>
           <Route path="/team" element={<PageTeam/>}/>
           <Route path="/team/:teamId" element={<Partner/>}/>
+          <Route path="/team/:teamId/edit-profile" element={<EditProfile/>}/>
         </Route>
       </Routes>
     </main>
