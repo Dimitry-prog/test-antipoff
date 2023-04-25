@@ -1,17 +1,21 @@
 import LikeActiveIcon from "../assets/LikeActiveIcon.tsx";
 import LikeInactiveIcon from "../assets/LikeInactiveIcon.tsx";
 import { Link } from "react-router-dom";
-import { TUser } from "../types/userTypes.ts";
-import { useState } from "react";
+import { TUserCurrent } from "../types/userTypes.ts";
+import { useAppDispatch } from "../hooks/reduxHooks.ts";
+import { userActions } from "../store/slices/userSlice.ts";
 
 type TTeamCardProps = {
-  user: TUser;
+  user: TUserCurrent;
 }
 
 const TeamCard = ({ user }: TTeamCardProps) => {
-  const { id, first_name, last_name, avatar } = user;
-  const fullName = `${first_name} ${last_name}`;
-  const [isLike, setIsLike] = useState<boolean>(false);
+  const { id, fullName, avatar, isLike } = user;
+  const dispatch = useAppDispatch();
+
+  const handleToggleLike = (id: number): void => {
+    dispatch(userActions.toggleLike({ id }));
+  }
 
   return (
     <div className="min-w-[305px] pt-9 pb-5 px-5 flex flex-col gap-4 items-center rounded-[10px] shadow-md">
@@ -21,7 +25,7 @@ const TeamCard = ({ user }: TTeamCardProps) => {
         <h3 className="text-lg text-center">{fullName}</h3>
       </Link>
       <button
-        onClick={() => setIsLike(!isLike)}
+        onClick={() => handleToggleLike(id)}
         type="button"
         aria-label="like"
         className="self-end rounded bg-gray-light hover:bg-white transition-all duration-500">

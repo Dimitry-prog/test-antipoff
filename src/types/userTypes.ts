@@ -10,6 +10,13 @@ export type TUser = {
   last_name: string
   avatar: string
 }
+export type TUserCurrent = {
+  id: number
+  email: string
+  fullName: string
+  avatar: string
+  isLike: boolean
+}
 
 export type TSupport = {
   url: string

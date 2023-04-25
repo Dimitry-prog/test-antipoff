@@ -1,17 +1,17 @@
-import { TUser } from "../../types/userTypes.ts";
-import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
+import { TUserCurrent } from "../../types/userTypes.ts";
+import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getUser, getUsers } from "../../api/userApi.ts";
 
 type TUserState = {
-  user: TUser | null,
-  userList: TUser[],
+  user: TUserCurrent | null,
+  userList: TUserCurrent[],
   status: "init" | "loading" | "success" | "error";
   error: string | undefined;
 }
 
 const initialState: TUserState = {
   user: null,
-  userList: [],
+  userList: JSON.parse(localStorage.getItem("userList") ?? "[]"),
   status: "init",
   error: undefined,
 };
@@ -19,7 +19,17 @@ const initialState: TUserState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleLike: (state, action: PayloadAction<{ id: number }>) => {
+      state.userList = state.userList.map(user => {
+        if (user.id === action.payload.id) {
+          user.isLike = !user.isLike;
+        }
+        return user;
+      });
+      localStorage.setItem("userList", JSON.stringify(state.userList));
+    }
+  },
   extraReducers: (builder: ActionReducerMapBuilder<TUserState>) => {
     builder
       .addCase(getUser.pending, (state) => {
@@ -28,7 +38,15 @@ const userSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.status = "success";
-        state.user = action.payload.data;
+        const { id, avatar, first_name, last_name, email } = action.payload.data;
+        const fullName = `${first_name} ${last_name}`;
+        state.user = {
+          id,
+          email,
+          fullName,
+          avatar,
+          isLike: false,
+        }
       })
       .addCase(getUser.rejected, (state, action) => {
         state.status = "error";
@@ -40,7 +58,14 @@ const userSlice = createSlice({
       })
       .addCase(getUsers.fulfilled, (state, action) => {
         state.status = "success";
-        state.userList = action.payload.data;
+        state.userList = action.payload.data.map(user => ({
+          id: user.id,
+          email: user.email,
+          fullName: `${user.first_name} ${user.last_name}`,
+          avatar: user.avatar,
+          isLike: false,
+        }));
+        localStorage.setItem("userList", JSON.stringify(state.userList));
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.status = "error";
@@ -49,4 +74,4 @@ const userSlice = createSlice({
   },
 });
 
-export const { reducer: userReducer } = userSlice;
+export const { reducer: userReducer, actions: userActions } = userSlice;

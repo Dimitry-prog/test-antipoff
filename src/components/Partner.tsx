@@ -14,7 +14,6 @@ const Partner = () => {
   const user = useAppSelector(state => state.user.user);
   const { teamId } = useParams();
   const dispatch = useAppDispatch();
-  const fullName = `${user?.first_name} ${user?.last_name}`;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -63,10 +62,10 @@ const Partner = () => {
           {isDesktop ? 'Выход' : <LogoutIcon/>}
         </button>
 
-        <img src={user?.avatar} alt={fullName}
+        <img src={user?.avatar} alt={user?.fullName}
              className="w-[188px] h-[188px] object-cover rounded-[100px]"/>
         <div className="flex flex-col gap-4 items-center lg:items-start text-white order-first lg:order-last">
-          <h1 className="w-full text-2xl lg:text-3xl">{fullName}</h1>
+          <h1 className="w-full text-2xl lg:text-3xl">{user?.fullName}</h1>
           <p className="text-lg lg:text-xl">Партнер</p>
         </div>
       </div>

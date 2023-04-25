@@ -28,4 +28,6 @@ export const teamList = [
 ];
 
 export const BASE_URL = "https://reqres.in/api";
+export const TOTAL_USERS = 12;
+export const PER_PAGE = 4;
 export const TOTAL_PAGE = 3;

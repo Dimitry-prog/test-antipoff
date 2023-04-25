@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUsers } from "../api/userApi.ts";
 import TeamCard from "./TeamCard.tsx";
-import { TOTAL_PAGE } from "../utils/constants.ts";
+import { PER_PAGE, TOTAL_PAGE } from "../utils/constants.ts";
 
 const TeamList = () => {
   const userList = useAppSelector(state => state.user.userList);
@@ -17,8 +17,10 @@ const TeamList = () => {
   }
 
   useEffect(() => {
-    dispatch(getUsers(page));
-  }, [page]);
+    if (!userList.length) {
+      dispatch(getUsers());
+    }
+  }, [userList]);
 
   if (status === "loading") {
     return <h1 className="flex items-center justify-center">LOADING...</h1>
@@ -27,7 +29,7 @@ const TeamList = () => {
   return (
     <div className="flex-grow flex flex-col gap-8">
       <ul className="px-2 lg:px-20 flex flex-wrap justify-center xl:justify-normal gap-5">
-        {userList.map(user => (
+        {userList.slice(page * PER_PAGE - PER_PAGE, page * PER_PAGE).map(user => (
           <li key={user.id}>
             <TeamCard user={user}/>
           </li>

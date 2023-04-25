@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, handleRequest } from "./api.ts";
 import { TUserResponse, TUsersResponse } from "../types/userTypes.ts";
+import { TOTAL_USERS } from "../utils/constants.ts";
 
 export const getUser = createAsyncThunk<TUserResponse, string, { rejectValue: string }>(
   'user/getUser',
@@ -10,10 +11,10 @@ export const getUser = createAsyncThunk<TUserResponse, string, { rejectValue: st
   }
 );
 
-export const getUsers = createAsyncThunk<TUsersResponse, number, { rejectValue: string }>(
+export const getUsers = createAsyncThunk<TUsersResponse, void, { rejectValue: string }>(
   'user/getUsers',
-  async (page, { rejectWithValue }) => {
-    const request = api(`/users?page=${page}&per_page=4`);
+  async (_, { rejectWithValue }) => {
+    const request = api(`/users?per_page=${TOTAL_USERS}`);
     return handleRequest(request, rejectWithValue);
   }
 );
