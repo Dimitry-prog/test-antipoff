@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 #root {
-    @apply h-screen font-roboto font-normal text-black text-base dark:bg-black/50
+    @apply font-roboto font-normal text-black text-base dark:bg-black/50
 }

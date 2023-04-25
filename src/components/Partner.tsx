@@ -5,7 +5,6 @@ import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
-import { getUser } from "../api/userApi.ts";
 import ProfileIcon from "../assets/ProfileIcon.tsx";
 import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import { authActions } from "../store/slices/authSlice.ts";
@@ -13,8 +12,9 @@ import { authActions } from "../store/slices/authSlice.ts";
 const Partner = () => {
   const [resize, setResize] = useState<number | null>(null);
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
-  const user = useAppSelector(state => state.user.user);
   const { teamId } = useParams();
+  const userList = useAppSelector(state => state.user.userList);
+  const user = userList.find(user => user.id === Number(teamId));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -22,12 +22,6 @@ const Partner = () => {
     dispatch(authActions.logout());
     navigate("/signin", { replace: true });
   }
-
-  useEffect(() => {
-    if (teamId) {
-      dispatch(getUser(teamId));
-    }
-  }, [teamId]);
 
   useEffect(() => {
     const handleResize = () => setResize(window.innerWidth);
@@ -44,7 +38,7 @@ const Partner = () => {
   }, []);
 
   return (
-    <section className="flex flex-col gap-8 lg:gap-12">
+    <section className="pb-5 flex flex-col gap-8 lg:gap-12">
       <div
         className="relative px-8 lg:px-[188px] py-16 lg:py-10 flex flex-col lg:flex-row gap-4 lg:gap-8 items-center bg-violet">
         <button
