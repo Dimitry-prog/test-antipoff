@@ -1,29 +1,30 @@
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { authUser } from "../api/authApi.ts";
 import { useNavigate } from "react-router-dom";
+import useFormValidation from "../hooks/useFormValidation.ts";
 
 const RegisterUser = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirm: '' });
+  const { errors, isValid, handleChange, handleBlur, handleChangeInRealTime, resetForm, values } = useFormValidation();
   const status = useAppSelector(state => state.auth.status);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const data = {
       email: "eve.holt@reqres.in",
-      password: formData.password,
+      password: values.password,
     };
 
     dispatch(authUser({
       authData: data,
       endpoint: "/register"
-    })).unwrap().then(() => navigate("/team", { replace: true }));
+    })).unwrap().then(() => {
+      navigate("/team", { replace: true });
+      resetForm();
+    });
   }
 
   return (
@@ -31,58 +32,93 @@ const RegisterUser = () => {
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-[500px] p-4 flex flex-col gap-4 shadow-md rounded-2xl"
+        noValidate
       >
         <h2 className='text-lg'>Регистрация</h2>
-        <div className="flex flex-col gap-2">
+        <div className="relative flex flex-col gap-2">
           <p>Имя</p>
           <input
-            value={formData.name}
+            value={values.name || ''}
             onChange={handleChange}
+            onBlur={handleBlur}
             type="text"
             name="name"
             placeholder="Ваше имя"
             disabled={status === 'loading'}
-            className="py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-gray outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500"
+            required
+            pattern="[a-zA-Zа-яА-Я0-9ё]{2,}"
+            className={`${errors.name
+              ? "invalid:ring-red invalid:ring-2"
+              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
+          <span className="absolute -bottom-[15px] text-xs text-red">{errors.name
+            ? "Имя должен быть не менее 2-х символов"
+            : ""}</span>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="relative flex flex-col gap-2">
           <p>Электронная почта</p>
           <input
-            value={formData.email}
+            value={values.email || ''}
             onChange={handleChange}
+            onBlur={handleBlur}
             type="email"
             name="email"
             placeholder="Ваше электронная почта"
             disabled={status === 'loading'}
-            className="py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-gray outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500"
+            required
+            pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$"
+            className={`${errors.email
+              ? "invalid:ring-red invalid:ring-2"
+              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
+          <span className="absolute -bottom-[15px] text-xs text-red">{errors.email
+            ? "Введите корректный email"
+            : ""}</span>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="relative flex flex-col gap-2">
           <p>Пароль</p>
           <input
-            value={formData.password}
+            value={values.password || ''}
             onChange={handleChange}
+            onBlur={handleBlur}
             type="password"
             name="password"
             placeholder="Пароль"
             disabled={status === 'loading'}
-            className="py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-gray outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500"
+            required
+            pattern="[a-zA-Zа-яА-Я0-9ё]{2,}"
+            className={`${errors.password
+              ? "invalid:ring-red invalid:ring-2"
+              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
+          <span className="absolute -bottom-[15px] text-xs text-red">{errors.password
+            ? "Пароль должен быть не менее 2-х символов"
+            : ""}</span>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="relative flex flex-col gap-2">
           <p>Подтвердите пароль</p>
           <input
-            value={formData.confirm}
-            onChange={handleChange}
+            value={values.confirm || ''}
+            onChange={handleChangeInRealTime}
+            onBlur={handleBlur}
             type="password"
             name="confirm"
             placeholder="Подтвердите пароль"
             disabled={status === 'loading'}
-            className="py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-gray outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500"/>
+            required
+            pattern={values.password}
+            className={`${errors.confirm
+              ? "invalid:ring-red invalid:ring-2"
+              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
+          />
+          <span className="absolute -bottom-[15px] text-xs text-red">{errors.confirm
+            ? "Пароли долны совпадать"
+            : ""}</span>
         </div>
         <button
           type="submit"
-          className="w-full mt-2 py-3 text-white rounded-lg bg-violet ring-violet hover:bg-white hover:text-violet hover:ring-2 disabled:opacity-80 transition-all duration-500">
+          disabled={status === 'loading' || !isValid}
+          className="w-full mt-2 py-3 text-white rounded-lg bg-violet ring-violet hover:bg-white hover:text-violet hover:ring-2 disabled:opacity-60 disabled:hover:bg-violet disabled:hover:text-white disabled:hover:ring-0 transition-all duration-500">
           {status === 'loading' ? 'Регистрируем...' : "Зарегистрироваться"}
         </button>
       </form>
