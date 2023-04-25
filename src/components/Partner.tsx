@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUser } from "../api/userApi.ts";
 import ProfileIcon from "../assets/ProfileIcon.tsx";
 import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
+import { authActions } from "../store/slices/authSlice.ts";
 
 const Partner = () => {
   const [resize, setResize] = useState<number | null>(null);
@@ -18,7 +19,7 @@ const Partner = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    dispatch(authActions.logout());
     navigate("/signin", { replace: true });
   }
 
@@ -47,7 +48,7 @@ const Partner = () => {
       <div
         className="relative px-8 lg:px-[188px] py-16 lg:py-10 flex flex-col lg:flex-row gap-4 lg:gap-8 items-center bg-violet">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/team")}
           type="button"
           aria-label="back"
           className="lg:px-4 lg:py-2 absolute top-6 left-4 lg:top-[15%] lg:left-[5%] text-gray-light lg:border border-gray-light rounded-lg hover:opacity-70 transition-all duration-500"

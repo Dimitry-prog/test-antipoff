@@ -6,7 +6,7 @@ import { updateUser } from "../api/userApi.ts";
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({ avatar: '' });
-  const status = useAppSelector(state => state.auth.status);
+  const status = useAppSelector(state => state.user.status);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { teamId } = useParams();

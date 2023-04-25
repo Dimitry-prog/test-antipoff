@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { authUser } from "../api/authApi.ts";
 import { useNavigate } from "react-router-dom";
 
@@ -20,14 +20,11 @@ const RegisterUser = () => {
       password: formData.password,
     };
 
-    dispatch(authUser({ authData: data, endpoint: "/register" }));
+    dispatch(authUser({
+      authData: data,
+      endpoint: "/register"
+    })).unwrap().then(() => navigate("/team", { replace: true }));
   }
-
-  useEffect(() => {
-    if (status === 'success') {
-      navigate("/team", { replace: true });
-    }
-  }, [status]);
 
   return (
     <section className="h-screen grid place-items-center">

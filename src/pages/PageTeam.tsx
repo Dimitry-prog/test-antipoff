@@ -3,14 +3,17 @@ import LogoutIcon from "../assets/LogoutIcon.tsx";
 import { useEffect, useState } from "react";
 import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../hooks/reduxHooks.ts";
+import { authActions } from "../store/slices/authSlice.ts";
 
 const PageTeam = () => {
   const [resize, setResize] = useState<number | null>(null);
   const isDesktop = resize !== null && resize >= BREAKPOINT_DESKTOP;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    dispatch(authActions.logout());
     navigate("/signin", { replace: true });
   }
 
