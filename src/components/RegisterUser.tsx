@@ -25,7 +25,7 @@ const RegisterUser = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      navigate("/team");
+      navigate("/team", { replace: true });
     }
   }, [status]);
 

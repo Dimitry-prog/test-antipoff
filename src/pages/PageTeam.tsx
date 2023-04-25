@@ -11,7 +11,7 @@ const PageTeam = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate("/signin");
+    navigate("/signin", { replace: true });
   }
 
   useEffect(() => {

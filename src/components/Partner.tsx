@@ -17,9 +17,9 @@ const Partner = () => {
   const fullName = `${user?.first_name} ${user?.last_name}`;
   const navigate = useNavigate();
 
-  const handleLogout = (): void => {
+  const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate("/signin");
+    navigate("/signin", { replace: true });
   }
 
   useEffect(() => {

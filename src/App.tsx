@@ -6,8 +6,9 @@ import Partner from "./components/Partner.tsx";
 import PageTeam from "./pages/PageTeam.tsx";
 
 const App = () => {
+
   return (
-    <main className="dark:bg-black/50">
+    <main className="max-w-[1440px] mx-auto">
       <Routes>
         <Route path="/" element={<RegisterUser/>}/>
         <Route path="/signin" element={<LoginUser/>}/>
