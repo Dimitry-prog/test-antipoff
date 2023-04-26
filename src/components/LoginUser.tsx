@@ -6,6 +6,7 @@ import useFormValidation from "../hooks/useFormValidation.ts";
 import useToggleTypeInput from "../hooks/useToggleTypeInput.ts";
 import EyeShowIcon from "../assets/EyeShowIcon.tsx";
 import EyeIcon from "../assets/EyeIcon.tsx";
+import { toast } from "react-toastify";
 
 const LoginUser = () => {
   const { errors, isValid, handleBlur, handleChange, handleChangeInRealTime, resetForm, values } = useFormValidation();
@@ -26,6 +27,7 @@ const LoginUser = () => {
       authData: data,
       endpoint: "/login"
     })).unwrap().then(() => {
+      toast.success("Вы вернулись 😍");
       navigate("/team", { replace: true });
       resetForm();
     });

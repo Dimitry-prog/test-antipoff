@@ -4,6 +4,7 @@ import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { updateUser } from "../api/userApi.ts";
 import useFormValidation from "../hooks/useFormValidation.ts";
+import { toast } from "react-toastify";
 
 const EditProfile = () => {
   const { errors, isValid, handleChangeInRealTime, resetForm, values } = useFormValidation();
@@ -20,6 +21,7 @@ const EditProfile = () => {
         avatar: values.avatar,
       };
       dispatch(updateUser(data)).unwrap().then(() => {
+        toast.success("Ваши данные успешно сохранены!");
         navigate(-1);
         resetForm();
       });
