@@ -28,7 +28,8 @@ const TeamCard = ({ user }: TTeamCardProps) => {
         onClick={() => handleToggleLike(id)}
         type="button"
         aria-label="like"
-        className="self-end rounded bg-gray-light hover:bg-white transition-all duration-500">
+        className="self-end rounded bg-gray-light hover:bg-white transition-all duration-500"
+      >
         {isLike ? <LikeActiveIcon/> : <LikeInactiveIcon/>}
       </button>
     </div>

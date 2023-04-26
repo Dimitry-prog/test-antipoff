@@ -59,9 +59,11 @@ const EditProfile = () => {
               ? "invalid:ring-red invalid:ring-2"
               : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
-          <span className="absolute -bottom-[15px] text-xs text-red">{errors.avatar
-            ? "Введите корректную ссылку"
-            : ""}</span>
+          <span className="absolute -bottom-[15px] text-xs text-red">
+            {errors.avatar
+              ? "Введите корректную ссылку"
+              : ""}
+          </span>
         </div>
         <button
           type="submit"

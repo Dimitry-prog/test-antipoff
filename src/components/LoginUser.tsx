@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useFormValidation from "../hooks/useFormValidation.ts";
 
 const LoginUser = () => {
-  const { errors, isValid, handleChange, handleBlur, resetForm, values } = useFormValidation();
+  const { errors, isValid, handleBlur, handleChange, handleChangeInRealTime, resetForm, values } = useFormValidation();
   const status = useAppSelector(state => state.auth.status);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -51,16 +51,17 @@ const LoginUser = () => {
               ? "invalid:ring-red invalid:ring-2"
               : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
-          <span className="absolute -bottom-[15px] text-xs text-red">{errors.email
-            ? "Введите корректный email"
-            : ""}</span>
+          <span className="absolute -bottom-[15px] text-xs text-red">
+            {errors.email
+              ? "Введите корректный email"
+              : ""}
+          </span>
         </div>
         <div className="relative flex flex-col gap-2">
           <p>Пароль</p>
           <input
             value={values.password || ''}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            onChange={handleChangeInRealTime}
             type="password"
             name="password"
             placeholder="Пароль"
@@ -71,9 +72,11 @@ const LoginUser = () => {
               ? "invalid:ring-red invalid:ring-2"
               : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
-          <span className="absolute -bottom-[15px] text-xs text-red">{errors.password
-            ? "Пароль должен быть не менее 2-х символов"
-            : ""}</span>
+          <span className="absolute -bottom-[15px] text-xs text-red">
+            {errors.password
+              ? "Пароль должен быть не менее 2-х символов"
+              : ""}
+          </span>
         </div>
         <button
           type="submit"

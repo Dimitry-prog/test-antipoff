@@ -1,5 +1,5 @@
 import { TUserCurrent } from "../../types/userTypes.ts";
-import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getUser, getUsers, updateUser } from "../../api/userApi.ts";
 
 type TUserState = {
@@ -21,12 +21,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     toggleLike: (state, action: PayloadAction<{ id: number }>) => {
-      state.userList = state.userList.map(user => {
-        if (user.id === action.payload.id) {
-          user.isLike = !user.isLike;
-        }
-        return user;
-      });
+      const user = state.userList.find(user => user.id === action.payload.id);
+
+      if (!user) return;
+
+      user.isLike = !user.isLike;
       localStorage.setItem("userList", JSON.stringify(state.userList));
     }
   },
@@ -48,10 +47,6 @@ const userSlice = createSlice({
           isLike: false,
         }
       })
-      .addCase(getUser.rejected, (state, action) => {
-        state.status = "error";
-        state.error = action.payload;
-      })
       .addCase(getUsers.pending, (state) => {
         state.status = "loading";
         state.error = undefined;
@@ -67,29 +62,28 @@ const userSlice = createSlice({
         }));
         localStorage.setItem("userList", JSON.stringify(state.userList));
       })
-      .addCase(getUsers.rejected, (state, action) => {
-        state.status = "error";
-        state.error = action.payload;
-      })
       .addCase(updateUser.pending, (state) => {
         state.status = "loading";
         state.error = undefined;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.status = "success";
-
         const user = state.userList.find(user => user.id === action.payload.id);
 
         if (!user) return;
-        
+
         user.avatar = action.payload.avatar;
         localStorage.setItem("userList", JSON.stringify(state.userList));
       })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.status = "error";
+      .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
-      })
+        state.status = "error";
+      });
   },
 });
+
+const isError = (action: AnyAction) => {
+  return action.type.endsWith('rejected');
+};
 
 export const { reducer: userReducer, actions: userActions } = userSlice;
