@@ -2,20 +2,16 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { getUsers } from "../api/userApi.ts";
 import TeamCard from "./TeamCard.tsx";
-import { PER_PAGE, TOTAL_PAGE } from "../utils/constants.ts";
+import { PER_PAGE } from "../utils/constants.ts";
 import Loader from "./Loader.tsx";
+import Pagination from "./Pagination.tsx";
 
 const TeamList = () => {
   const userList = useAppSelector(state => state.user.userList);
   const status = useAppSelector(state => state.user.status);
   const [page, setPage] = useState<number>(1)
   const dispatch = useAppDispatch();
-
-  const handleSelectPage = (numOfPage: number): void => {
-    if (numOfPage >= 1 && numOfPage <= TOTAL_PAGE) {
-      setPage(numOfPage);
-    }
-  }
+  const totalPage = userList.length / PER_PAGE;
 
   useEffect(() => {
     if (!userList.length) {
@@ -37,48 +33,7 @@ const TeamList = () => {
         ))}
       </ul>
 
-      <ul className="px-2 lg:px-20 flex flex-wrap items-center justify-center gap-5">
-        <li>
-          <button
-            onClick={() => handleSelectPage(page - 1)}
-            type="button"
-            aria-label="pagination"
-            disabled={page === 1}
-            className={`${page > 1
-              ? "hover:bg-violet"
-              : "disabled:opacity-20"} w-8 h-8 flex items-center justify-center rounded-md transition-all duration-500`}
-          >
-            👈
-          </button>
-        </li>
-        {[...Array(TOTAL_PAGE)].map((_, i) => (
-          <li key={i}>
-            <button
-              onClick={() => handleSelectPage(i + 1)}
-              type="button"
-              aria-label="pagination"
-              className={`${page === i + 1
-                ? "bg-violet text-white"
-                : ""} w-8 h-8 flex items-center justify-center border border-violet rounded-md hover:bg-violet hover:text-white transition-all duration-500`}
-            >
-              {i + 1}
-            </button>
-          </li>
-        ))}
-        <li>
-          <button
-            onClick={() => handleSelectPage(page + 1)}
-            type="button"
-            aria-label="pagination"
-            disabled={page === TOTAL_PAGE}
-            className={`${page < TOTAL_PAGE
-              ? "hover:bg-violet"
-              : "disabled:opacity-20"} w-8 h-8 flex items-center justify-center rounded-md transition-all duration-500`}
-          >
-            👉
-          </button>
-        </li>
-      </ul>
+      <Pagination page={page} setPage={setPage} totalPage={totalPage}/>
     </div>
   );
 };
