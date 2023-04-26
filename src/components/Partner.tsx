@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import ProfileIcon from "../assets/ProfileIcon.tsx";
 import ArrLeftIcon from "../assets/ArrLeftIcon.tsx";
 import { authActions } from "../store/slices/authSlice.ts";
-import useResizeWindow from "../hooks/useResizeWindow.tsx";
+import useResizeWindow from "../hooks/useResizeWindow.ts";
 
 const Partner = () => {
   const resize = useResizeWindow();

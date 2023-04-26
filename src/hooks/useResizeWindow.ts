@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const UseResizeWindow = () => {
+const useResizeWindow = () => {
   const [resize, setResize] = useState<number | null>(null);
 
   useEffect(() => {
@@ -20,4 +20,4 @@ const UseResizeWindow = () => {
   return resize;
 };
 
-export default UseResizeWindow;
+export default useResizeWindow;

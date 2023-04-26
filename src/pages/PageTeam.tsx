@@ -4,7 +4,7 @@ import { BREAKPOINT_DESKTOP } from "../utils/constants.ts";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/reduxHooks.ts";
 import { authActions } from "../store/slices/authSlice.ts";
-import useResizeWindow from "../hooks/useResizeWindow.tsx";
+import useResizeWindow from "../hooks/useResizeWindow.ts";
 
 const PageTeam = () => {
   const resize = useResizeWindow();
