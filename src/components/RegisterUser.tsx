@@ -3,12 +3,17 @@ import { FormEvent } from "react";
 import { authUser } from "../api/authApi.ts";
 import { useNavigate } from "react-router-dom";
 import useFormValidation from "../hooks/useFormValidation.ts";
+import EyeIcon from "../assets/EyeIcon.tsx";
+import EyeShowIcon from "../assets/EyeShowIcon.tsx";
+import useToggleTypeInput from "../hooks/useToggleTypeInput.ts";
 
 const RegisterUser = () => {
   const { errors, isValid, handleChange, handleBlur, handleChangeInRealTime, resetForm, values } = useFormValidation();
   const status = useAppSelector(state => state.auth.status);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { toggleType: togglePasswordType, setToggleType: setTogglePasswordType } = useToggleTypeInput();
+  const { toggleType: toggleConfirmPasswordType, setToggleType: setToggleConfirmPasswordType } = useToggleTypeInput();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,7 +51,7 @@ const RegisterUser = () => {
             placeholder="Ваше имя"
             disabled={status === 'loading'}
             required
-            pattern="[a-zA-Zа-яА-Я0-9ё]{2,}"
+            pattern="[a-zA-Zа-яА-Я0-9ё-\s]{2,}"
             className={`${errors.name
               ? "invalid:ring-red invalid:ring-2"
               : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
@@ -85,7 +90,7 @@ const RegisterUser = () => {
             value={values.password || ''}
             onChange={handleChange}
             onBlur={handleBlur}
-            type="password"
+            type={togglePasswordType ? "text" : "password"}
             name="password"
             placeholder="Пароль"
             disabled={status === 'loading'}
@@ -93,8 +98,18 @@ const RegisterUser = () => {
             pattern="[a-zA-Zа-яА-Я0-9ё]{2,}"
             className={`${errors.password
               ? "invalid:ring-red invalid:ring-2"
-              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
+              : ""} py-3 pl-4 pr-12 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
+
+          <button
+            onClick={() => setTogglePasswordType(!togglePasswordType)}
+            type="button"
+            aria-label="toggle show password"
+            className="absolute top-[53%] right-4 flex items-center justify-center hover:opacity-70 transition-all duration-500"
+          >
+            {togglePasswordType ? <EyeShowIcon/> : <EyeIcon/>}
+          </button>
+
           <span className="absolute -bottom-[15px] text-xs text-red">
             {errors.password
               ? "Пароль должен быть не менее 2-х символов"
@@ -107,7 +122,7 @@ const RegisterUser = () => {
             value={values.confirm || ''}
             onChange={handleChangeInRealTime}
             onBlur={handleBlur}
-            type="password"
+            type={toggleConfirmPasswordType ? "text" : "password"}
             name="confirm"
             placeholder="Подтвердите пароль"
             disabled={status === 'loading'}
@@ -115,8 +130,18 @@ const RegisterUser = () => {
             pattern={values.password}
             className={`${errors.confirm
               ? "invalid:ring-red invalid:ring-2"
-              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
+              : ""} py-3 pl-4 pr-12 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
+
+          <button
+            onClick={() => setToggleConfirmPasswordType(!toggleConfirmPasswordType)}
+            type="button"
+            aria-label="toggle show password"
+            className="absolute top-[53%] right-4 flex items-center justify-center hover:opacity-70 transition-all duration-500"
+          >
+            {toggleConfirmPasswordType ? <EyeShowIcon/> : <EyeIcon/>}
+          </button>
+
           <span className="absolute -bottom-[15px] text-xs text-red">
             {errors.confirm
               ? "Пароли долны совпадать"

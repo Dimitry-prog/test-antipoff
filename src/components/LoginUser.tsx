@@ -3,12 +3,16 @@ import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks.ts";
 import { authUser } from "../api/authApi.ts";
 import { useNavigate } from "react-router-dom";
 import useFormValidation from "../hooks/useFormValidation.ts";
+import useToggleTypeInput from "../hooks/useToggleTypeInput.ts";
+import EyeShowIcon from "../assets/EyeShowIcon.tsx";
+import EyeIcon from "../assets/EyeIcon.tsx";
 
 const LoginUser = () => {
   const { errors, isValid, handleBlur, handleChange, handleChangeInRealTime, resetForm, values } = useFormValidation();
   const status = useAppSelector(state => state.auth.status);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { toggleType, setToggleType } = useToggleTypeInput();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,7 +66,7 @@ const LoginUser = () => {
           <input
             value={values.password || ''}
             onChange={handleChangeInRealTime}
-            type="password"
+            type={toggleType ? "text" : "password"}
             name="password"
             placeholder="Пароль"
             disabled={status === 'loading'}
@@ -70,8 +74,18 @@ const LoginUser = () => {
             pattern="[a-zA-Zа-яА-Я0-9ё]{2,}"
             className={`${errors.password
               ? "invalid:ring-red invalid:ring-2"
-              : ""} py-3 pl-4 pr-3 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
+              : ""} py-3 pl-4 pr-12 text-sm rounded-lg bg-gray-light ring-violet outline-none focus:ring-2 disabled:opacity-80 transition-all duration-500`}
           />
+
+          <button
+            onClick={() => setToggleType(!toggleType)}
+            type="button"
+            aria-label="toggle show password"
+            className="absolute top-[53%] right-4 flex items-center justify-center hover:opacity-70 transition-all duration-500"
+          >
+            {toggleType ? <EyeShowIcon/> : <EyeIcon/>}
+          </button>
+
           <span className="absolute -bottom-[15px] text-xs text-red">
             {errors.password
               ? "Пароль должен быть не менее 2-х символов"
